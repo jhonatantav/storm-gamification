@@ -1,8 +1,9 @@
 import { DataSource, Repository } from 'typeorm';
 
+import { UserRepository } from './repositories/user.repository';
+
 import { DATABASE_CONNECTION_TOKEN } from 'src/database/database.providers';
 import { UserEntity } from './users.entity';
-import { UserRepository } from './repositories/user.repository';
 
 export const USERS_PROVIDER_TOKEN = 'USERS_PROVIDER';
 export const USERS_REPOSITORY_TOKEN = 'USERS_REPOSITORY';
