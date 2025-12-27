@@ -24,4 +24,16 @@ export class UserRepository
   async findOneByEmail(email: string): Promise<IUser | null> {
     return this.findOneBy({ email });
   }
+
+  async findOneByNickname(nickname: string): Promise<IUser | null> {
+    return this.findOneBy({ nickName: nickname });
+  }
+
+  async findOneByEmailOrNickname(
+    emailOrNickname: string,
+  ): Promise<IUser | null> {
+    return this.findOne({
+      where: [{ email: emailOrNickname }, { nickName: emailOrNickname }],
+    });
+  }
 }

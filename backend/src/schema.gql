@@ -16,8 +16,19 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input LoginDto {
+  emailOrNickname: String!
+  password: String!
+}
+
+type LoginResponse {
+  accessToken: String!
+  expiresAt: String!
+}
+
 type Mutation {
   createUser(input: CreateUserDto!): UserEntity!
+  login(input: LoginDto!): LoginResponse!
 }
 
 type Query {
@@ -25,6 +36,7 @@ type Query {
 
   """Health check endpoint"""
   health: String!
+  me: UserEntity!
 
   """Returns the current server time"""
   serverTime: String!

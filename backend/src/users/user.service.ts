@@ -30,4 +30,19 @@ export class UserService {
 
     return user;
   }
+
+  async findUserByNickname(nickname: string): Promise<IUser | null> {
+    return this.userRepository.findOneByNickname(nickname);
+  }
+
+  async findUserByEmailOrNickname(emailOrNickname: string): Promise<IUser> {
+    const user =
+      await this.userRepository.findOneByEmailOrNickname(emailOrNickname);
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    return user;
+  }
 }

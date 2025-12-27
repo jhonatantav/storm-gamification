@@ -10,6 +10,9 @@ import { HealthModule } from './health/health.module';
 import { DatabaseModule } from './database/database.module';
 import type { Request, Response } from 'express';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { GqlAuthGuard } from './auth/guards/gql-auth.guard';
 
 @Module({
   imports: [
@@ -49,20 +52,25 @@ import { UsersModule } from './users/users.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
-      playground: process.env.NODE_ENV !== 'production',
+      playground: false,
       introspection: process.env.NODE_ENV !== 'production',
       context: ({ req, res }: { req: Request; res: Response }) => ({
         req,
         res,
       }),
     }),
-
-    // Configuração do TypeORM com PostgreSQL via DatabaseModule
     DatabaseModule,
     HealthModule,
+    AuthModule,
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: GqlAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

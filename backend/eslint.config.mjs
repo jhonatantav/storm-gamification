@@ -1,35 +1,43 @@
-// @ts-check
-import eslint from '@eslint/js';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
+import baseConfig from '@interstardev/eslint-config/typescript';
 
-export default tseslint.config(
-  {
-    ignores: ['eslint.config.mjs'],
-  },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  eslintPluginPrettierRecommended,
-  {
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
-      },
-      sourceType: 'commonjs',
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
-  {
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
-      "prettier/prettier": ["error", { endOfLine: "auto" }],
-    },
-  },
+const tsConfig = baseConfig.find(
+  (config) => config.name === '@interstardev/eslint-config/typescript',
 );
+
+if (tsConfig && tsConfig.rules) {
+  tsConfig.rules['@typescript-eslint/no-unsafe-member-access'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-explicit-any'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-unsafe-return'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-unsafe-assignment'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-unsafe-call'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-unsafe-argument'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-misused-promises'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-unsafe-enum-comparison'] = 'warn';
+  tsConfig.rules['@typescript-eslint/restrict-template-expressions'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-base-to-string'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-empty-object-type'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-namespace'] = 'warn';
+  tsConfig.rules['@typescript-eslint/unbound-method'] = 'warn';
+  tsConfig.rules['@typescript-eslint/no-redundant-type-constituents'] = 'warn';
+
+  tsConfig.rules['@typescript-eslint/only-throw-error'] = 'off';
+  tsConfig.rules['@typescript-eslint/no-unused-vars'] = [
+    'warn',
+    {
+      args: 'all',
+      argsIgnorePattern: '^_',
+      caughtErrors: 'all',
+      caughtErrorsIgnorePattern: '^_',
+      destructuredArrayIgnorePattern: '^_',
+      varsIgnorePattern: '^_',
+      ignoreRestSiblings: true,
+    },
+  ];
+}
+
+export default [
+  {
+    ignores: ['dist/**/*', 'build/**/*', 'node_modules/**/*', 'coverage/**/*'],
+  },
+  ...baseConfig,
+];

@@ -20,6 +20,8 @@ const baseEnvSchema = z.object({
   POSTGRES_HOST: z.string(),
   POSTGRES_PORT: z.coerce.number(),
   DATABASE_SSL: z.string().optional(),
+  JWT_SECRET: z.string().optional(),
+  JWT_EXPIRES_IN: z.string().optional(),
 });
 
 const envVariables = baseEnvSchema.refine(
