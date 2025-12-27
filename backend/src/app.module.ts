@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
+import { DatabaseModule } from './database/database.module';
 import type { Request, Response } from 'express';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -56,23 +57,10 @@ import type { Request, Response } from 'express';
       }),
     }),
 
-    // Configuração do TypeORM com PostgreSQL
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('POSTGRES_HOST'),
-        port: configService.get<number>('POSTGRES_PORT'),
-        username: configService.get('POSTGRES_USER'),
-        password: configService.get('POSTGRES_PASSWORD'),
-        database: configService.get('POSTGRES_DB'),
-        entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-        synchronize: configService.get('NODE_ENV') !== 'production',
-        logging: configService.get('NODE_ENV') !== 'production',
-      }),
-    }),
+    // Configuração do TypeORM com PostgreSQL via DatabaseModule
+    DatabaseModule,
     HealthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
