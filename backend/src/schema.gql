@@ -42,6 +42,48 @@ type Query {
   serverTime: String!
 }
 
+"""Categoria da tarefa"""
+enum TaskCategory {
+  EDUCATION
+  FINANCE
+  FITNESS
+  HEALTH
+  HOBBY
+  OTHER
+  PERSONAL
+  SOCIAL
+  WORK
+}
+
+type TaskEntity {
+  category: TaskCategory!
+  createdAt: DateTime!
+  currentStreak: TaskStreakEntity
+  currentStreakId: String
+  deletedAt: DateTime
+  description: String
+  id: ID!
+  name: String!
+  seqId: Int!
+  status: Boolean!
+  updatedAt: DateTime!
+  user: UserEntity!
+  userId: String!
+  weeklyFrequency: [Weekday!]!
+}
+
+type TaskStreakEntity {
+  currentStreak: Int!
+  endedAt: DateTime
+  isActive: Boolean!
+  lastCompletedAt: DateTime
+  longestStreak: Int!
+  task: TaskEntity!
+  taskId: String!
+  user: UserEntity!
+  userId: String!
+}
+
 type UserEntity {
   avatarUrl: String
   createdAt: DateTime!
@@ -57,4 +99,15 @@ type UserEntity {
   status: Boolean!
   totalXp: Int!
   updatedAt: DateTime!
+}
+
+"""Dias da semana (0 = Domingo, 6 = Sábado)"""
+enum Weekday {
+  FRIDAY
+  MONDAY
+  SATURDAY
+  SUNDAY
+  THURSDAY
+  TUESDAY
+  WEDNESDAY
 }

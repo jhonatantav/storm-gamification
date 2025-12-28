@@ -36,4 +36,17 @@ export class UserRepository
       where: [{ email: emailOrNickname }, { nickName: emailOrNickname }],
     });
   }
+
+  async findById(id: string): Promise<IUser | null> {
+    return this.findOneBy({ id });
+  }
+
+  async updateUser(id: string, data: Partial<IUser>): Promise<IUser> {
+    await this.update(id, data);
+    const user = await this.findById(id);
+    if (!user) {
+      throw new Error('Usuário não encontrado após atualização');
+    }
+    return user;
+  }
 }
