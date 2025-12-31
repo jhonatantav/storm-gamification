@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TaskStreakService } from './task-streak.service';
 import { tasksStreakProviders } from './task-streak.provider';
 import { UsersModule } from 'src/users/users.module';
 import { TasksModule } from 'src/tasks/tasks.module';
 
 @Module({
-  imports: [UsersModule, TasksModule],
+  imports: [UsersModule, forwardRef(() => TasksModule)],
   providers: [TaskStreakService, ...tasksStreakProviders],
   exports: [TaskStreakService],
 })

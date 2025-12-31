@@ -3,24 +3,23 @@ import { taskProviders } from './task.provider';
 import { TaskResolver } from './task.resolver';
 import { TaskService } from './task.service';
 import { CreateTaskUseCase } from './use-cases/create-task.usecase';
-import { DeleteTaskUseCase } from './use-cases/delete-task.usecase';
-import { FindTaskUseCase } from './use-cases/find-task.usecase';
-import { UpdateTaskUseCase } from './use-cases/update-task.usecase';
+import { CompleteTaskUseCase } from './use-cases/complete-task.usecase';
 import { UsersModule } from 'src/users/users.module';
 import { TaskStreaksModule } from 'src/task-streaks/task-streaks.module';
+import { TemporalModule } from 'src/temporal/temporal.module';
 import { MyTasksUseCase } from './use-cases/my-taks.usecase';
+import { TaskOwnershipGuard } from './guards/task-ownership.guard';
 
 @Module({
-  imports: [UsersModule, TaskStreaksModule],
+  imports: [UsersModule, TaskStreaksModule, TemporalModule],
   providers: [
     TaskResolver,
     TaskService,
     ...taskProviders,
     CreateTaskUseCase,
-    FindTaskUseCase,
-    UpdateTaskUseCase,
+    CompleteTaskUseCase,
     MyTasksUseCase,
-    DeleteTaskUseCase,
+    TaskOwnershipGuard,
   ],
   exports: [TaskService],
 })

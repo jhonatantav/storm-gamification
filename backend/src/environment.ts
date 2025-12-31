@@ -22,6 +22,7 @@ const baseEnvSchema = z.object({
   DATABASE_SSL: z.string().optional(),
   JWT_SECRET: z.string().optional(),
   JWT_EXPIRES_IN: z.string().optional(),
+  TEMPORAL_ADDRESS: z.string().default('localhost:7233'),
 });
 
 const envVariables = baseEnvSchema.refine(

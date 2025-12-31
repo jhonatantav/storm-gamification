@@ -26,7 +26,6 @@ export class TaskService {
 
   async createTask(createTaskDto: CreateTaskDto): Promise<TaskEntity> {
     const createdTask = await this.taskRepository.createAndSave(createTaskDto);
-
     if (!createdTask) {
       throw new InternalServerErrorException('Falha ao criar a tarefa');
     }

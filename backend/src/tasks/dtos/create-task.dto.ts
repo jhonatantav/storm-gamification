@@ -9,10 +9,9 @@ import {
 } from 'class-validator';
 import { TaskCategory } from '../enums/task-category.enum';
 import { Weekday } from '../enums/weekday.enum';
-import { ICreateTask } from '../interfaces/create-task.interface';
 
 @InputType()
-export class CreateTaskDto implements ICreateTask {
+export class CreateTaskDto {
   @Field()
   @IsString()
   @IsNotEmpty()
@@ -34,9 +33,4 @@ export class CreateTaskDto implements ICreateTask {
   @IsEnum(Weekday, { each: true })
   @IsNotEmpty()
   weeklyFrequency: Weekday[];
-
-  @Field()
-  @IsString()
-  @IsNotEmpty()
-  userId: string;
 }

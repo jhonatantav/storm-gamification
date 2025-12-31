@@ -9,7 +9,7 @@ import {
 
 @ObjectType({ isAbstract: true })
 export abstract class BaseAbstractEntity {
-  @Field(() => ID)
+  @Field(() => String)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

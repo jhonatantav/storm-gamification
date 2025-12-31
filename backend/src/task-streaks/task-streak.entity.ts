@@ -7,23 +7,23 @@ import { UserEntity } from '../users/users.entity';
 @ObjectType()
 @Entity('task_streaks')
 export class TaskStreakEntity extends BaseAbstractWithoutSoftDeleteEntity {
-  @Field()
-  @Column({ type: 'uuid' })
-  taskId: string;
-
   @Field(() => TaskEntity)
   @ManyToOne(() => TaskEntity, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'taskId' })
+  @JoinColumn({ name: 'task_id', referencedColumnName: 'id' })
   task: TaskEntity;
 
   @Field()
   @Column({ type: 'uuid' })
-  userId: string;
+  taskId: string;
 
   @Field(() => UserEntity)
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: UserEntity;
+
+  @Field()
+  @Column({ type: 'uuid' })
+  userId: string;
 
   @Field(() => Int)
   @Column({ type: 'int', default: 0 })

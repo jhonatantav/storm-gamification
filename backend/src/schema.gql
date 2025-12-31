@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CompleteTaskResponseDto {
+  message: String!
+  streak: TaskStreakEntity!
+  task: TaskEntity!
+}
+
+input CreateTaskDto {
+  category: TaskCategory!
+  description: String
+  name: String!
+  weeklyFrequency: [Weekday!]!
+}
+
 input CreateUserDto {
   avatarUrl: String
   email: String!
@@ -27,6 +40,8 @@ type LoginResponse {
 }
 
 type Mutation {
+  completeTask(taskId: String!): CompleteTaskResponseDto!
+  createTask(input: CreateTaskDto!): TaskEntity!
   createUser(input: CreateUserDto!): UserEntity!
   login(input: LoginDto!): LoginResponse!
 }
@@ -37,6 +52,7 @@ type Query {
   """Health check endpoint"""
   health: String!
   me: UserEntity!
+  myTasks: [TaskEntity!]!
 
   """Returns the current server time"""
   serverTime: String!
@@ -62,7 +78,7 @@ type TaskEntity {
   currentStreakId: String
   deletedAt: DateTime
   description: String
-  id: ID!
+  id: String!
   name: String!
   seqId: Int!
   status: Boolean!
@@ -73,13 +89,18 @@ type TaskEntity {
 }
 
 type TaskStreakEntity {
+  createdAt: DateTime!
   currentStreak: Int!
   endedAt: DateTime
+  id: String!
   isActive: Boolean!
   lastCompletedAt: DateTime
   longestStreak: Int!
+  seqId: Int!
+  status: Boolean!
   task: TaskEntity!
   taskId: String!
+  updatedAt: DateTime!
   user: UserEntity!
   userId: String!
 }
@@ -92,7 +113,7 @@ type UserEntity {
   deletedAt: DateTime
   email: String!
   fullName: String!
-  id: ID!
+  id: String!
   nickName: String!
   phoneNumber: String!
   seqId: Int!

@@ -30,21 +30,21 @@ export class TaskEntity extends BaseAbstractEntity {
   @Column('simple-array')
   weeklyFrequency: Weekday[];
 
+  @Field(() => UserEntity)
+  @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: UserEntity;
+
   @Field()
   @Column({ type: 'uuid' })
   userId: string;
 
-  @Field(() => UserEntity)
-  @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
-  user: UserEntity;
+  @Field(() => TaskStreakEntity, { nullable: true })
+  @OneToOne(() => TaskStreakEntity, (streak) => streak.task, { nullable: true })
+  @JoinColumn({ name: 'current_streak_id', referencedColumnName: 'id' })
+  currentStreak?: TaskStreakEntity;
 
   @Field({ nullable: true })
   @Column({ type: 'uuid', nullable: true })
   currentStreakId?: string;
-
-  @Field(() => TaskStreakEntity, { nullable: true })
-  @OneToOne(() => TaskStreakEntity, (streak) => streak.task, { nullable: true })
-  @JoinColumn({ name: 'currentStreakId' })
-  currentStreak?: TaskStreakEntity;
 }

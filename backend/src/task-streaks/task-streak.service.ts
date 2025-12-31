@@ -7,6 +7,7 @@ import {
 import type { ITaskStreakRepository } from './repositories/task-streak.repository.interface';
 import { TASKS_STREAK_REPOSITORY_TOKEN } from './task-streak.provider';
 import { ITaskStreak } from './interfaces/task-streak.interface';
+import { TaskStreakEntity } from './task-streak.entity';
 
 @Injectable()
 export class TaskStreakService {
@@ -29,7 +30,7 @@ export class TaskStreakService {
     return this.taskStreakRepository.findAll();
   }
 
-  async findById(id: string): Promise<ITaskStreak> {
+  async findById(id: string): Promise<TaskStreakEntity> {
     const streak = await this.taskStreakRepository.findById(id);
 
     if (!streak) {

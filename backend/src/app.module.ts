@@ -15,6 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { GqlAuthGuard } from './auth/guards/gql-auth.guard';
 import { TasksModule } from './tasks/tasks.module';
 import { TaskStreaksModule } from './task-streaks/task-streaks.module';
+import { TemporalModule } from './temporal/temporal.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { TaskStreaksModule } from './task-streaks/task-streaks.module';
       }),
     }),
     DatabaseModule,
+    TemporalModule,
     HealthModule,
     AuthModule,
     UsersModule,

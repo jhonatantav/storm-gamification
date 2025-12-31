@@ -1,3 +1,4 @@
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
@@ -5,25 +6,30 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+@ObjectType({ isAbstract: true })
 export abstract class BaseAbstractWithoutSoftDeleteEntity {
+  @Field(() => String)
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Field(() => Int)
   @Column({
     generated: 'increment',
   })
   seqId: number;
 
+  @Field()
   @Column({
     type: 'boolean',
     default: true,
-    select: false,
   })
   status: boolean;
 
-  @CreateDateColumn({ type: 'timestamp', update: false, select: false })
+  @Field()
+  @CreateDateColumn({ type: 'timestamp', update: false })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp', select: false })
+  @Field()
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 }
