@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CompleteTaskResponseDto {
+  message: String!
+  streak: TaskStreakEntity!
+  task: TaskEntity!
+}
+
+input CreateTaskDto {
+  category: TaskCategory!
+  description: String
+  name: String!
+  weeklyFrequency: [Weekday!]!
+}
+
 input CreateUserDto {
   avatarUrl: String
   email: String!
@@ -27,6 +40,8 @@ type LoginResponse {
 }
 
 type Mutation {
+  completeTask(taskId: String!): CompleteTaskResponseDto!
+  createTask(input: CreateTaskDto!): TaskEntity!
   createUser(input: CreateUserDto!): UserEntity!
   login(input: LoginDto!): LoginResponse!
 }
@@ -37,9 +52,57 @@ type Query {
   """Health check endpoint"""
   health: String!
   me: UserEntity!
+  myTasks: [TaskEntity!]!
 
   """Returns the current server time"""
   serverTime: String!
+}
+
+"""Categoria da tarefa"""
+enum TaskCategory {
+  EDUCATION
+  FINANCE
+  FITNESS
+  HEALTH
+  HOBBY
+  OTHER
+  PERSONAL
+  SOCIAL
+  WORK
+}
+
+type TaskEntity {
+  category: TaskCategory!
+  createdAt: DateTime!
+  currentStreak: TaskStreakEntity
+  currentStreakId: String
+  deletedAt: DateTime
+  description: String
+  id: String!
+  name: String!
+  seqId: Int!
+  status: Boolean!
+  updatedAt: DateTime!
+  user: UserEntity!
+  userId: String!
+  weeklyFrequency: [Weekday!]!
+}
+
+type TaskStreakEntity {
+  createdAt: DateTime!
+  currentStreak: Int!
+  endedAt: DateTime
+  id: String!
+  isActive: Boolean!
+  lastCompletedAt: DateTime
+  longestStreak: Int!
+  seqId: Int!
+  status: Boolean!
+  task: TaskEntity!
+  taskId: String!
+  updatedAt: DateTime!
+  user: UserEntity!
+  userId: String!
 }
 
 type UserEntity {
@@ -50,11 +113,22 @@ type UserEntity {
   deletedAt: DateTime
   email: String!
   fullName: String!
-  id: ID!
+  id: String!
   nickName: String!
   phoneNumber: String!
   seqId: Int!
   status: Boolean!
   totalXp: Int!
   updatedAt: DateTime!
+}
+
+"""Dias da semana (0 = Domingo, 6 = Sábado)"""
+enum Weekday {
+  FRIDAY
+  MONDAY
+  SATURDAY
+  SUNDAY
+  THURSDAY
+  TUESDAY
+  WEDNESDAY
 }

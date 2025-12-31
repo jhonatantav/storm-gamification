@@ -6,4 +6,6 @@ export interface IUserRepository {
   findOneByEmail(email: string): Promise<IUser | null>;
   findOneByNickname(nickname: string): Promise<IUser | null>;
   findOneByEmailOrNickname(emailOrNickname: string): Promise<IUser | null>;
+  findById(id: string): Promise<IUser | null>;
+  updateUser(id: string, data: Partial<IUser>): Promise<IUser>;
 }

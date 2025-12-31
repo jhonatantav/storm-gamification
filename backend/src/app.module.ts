@@ -13,6 +13,9 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { GqlAuthGuard } from './auth/guards/gql-auth.guard';
+import { TasksModule } from './tasks/tasks.module';
+import { TaskStreaksModule } from './task-streaks/task-streaks.module';
+import { TemporalModule } from './temporal/temporal.module';
 
 @Module({
   imports: [
@@ -60,9 +63,12 @@ import { GqlAuthGuard } from './auth/guards/gql-auth.guard';
       }),
     }),
     DatabaseModule,
+    TemporalModule,
     HealthModule,
     AuthModule,
     UsersModule,
+    TasksModule,
+    TaskStreaksModule,
   ],
   controllers: [AppController],
   providers: [
