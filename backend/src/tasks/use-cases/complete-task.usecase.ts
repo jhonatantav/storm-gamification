@@ -27,6 +27,15 @@ export class CompleteTaskUseCase {
 
   async execute(taskId: string): Promise<CompleteTaskOutput> {
     const task = await this.taskService.findById(taskId);
+    const now = new Date();
+
+    const taskHasMoreThan24Hours = this.hasMoreThan24Hours(now, task.createdAt);
+
+    if (!taskHasMoreThan24Hours) {
+      throw new BadRequestException(
+        'A tarefa só pode ser completada após 24 horas de sua criação',
+      );
+    }
 
     if (!task) {
       throw new NotFoundException(`Tarefa com ID ${taskId} não encontrada`);
@@ -35,7 +44,6 @@ export class CompleteTaskUseCase {
     // 2. Busca ou cria a streak ativa para esta task
     let streak = await this.taskStreakService.findActiveByTaskId(taskId);
 
-    const now = new Date();
     let currentStreakCount = 1;
 
     if (streak) {
@@ -84,21 +92,12 @@ export class CompleteTaskUseCase {
     }
 
     // 4. Envia para o Temporal calcular XP e atualizar o nível (assíncrono)
-    try {
-      await this.temporalService.updateUserLevel({
-        userId: task.userId,
-        taskName: task.name,
-        weeklyFrequency: task.weeklyFrequency,
-        currentStreakCount,
-      });
-    } catch (error) {
-      this.logger.error(
-        'Erro ao iniciar workflow do Temporal para atualizar nível',
-        error,
-      );
-      // Não falha a operação se o Temporal estiver indisponível
-      // O XP será calculado e atualizado quando o worker processar
-    }
+    this.temporalService.updateUserLevel({
+      userId: task.userId,
+      taskName: task.name,
+      weeklyFrequency: task.weeklyFrequency,
+      currentStreakCount,
+    });
 
     // Recarrega a streak com todas as relações para retornar completa
     const fullStreak = await this.taskStreakService.findById(streak.id);
@@ -109,5 +108,9 @@ export class CompleteTaskUseCase {
       message:
         'Tarefa completada com sucesso! XP sendo calculado e processado...',
     };
+  }
+
+  private hasMoreThan24Hours(date1: Date, date2: Date): boolean {
+    return Math.abs(date1.getTime() - date2.getTime()) > 24 * 60 * 60 * 1000;
   }
 }
