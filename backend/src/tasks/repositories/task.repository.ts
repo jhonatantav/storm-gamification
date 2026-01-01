@@ -37,4 +37,14 @@ export class TaskRepository
   async deleteById(id: string): Promise<void> {
     await this.softDelete(id);
   }
+
+  async findDailyUserTasks(
+    weekDay: number,
+    userId: string,
+  ): Promise<TaskEntity[]> {
+    return this.createQueryBuilder('task')
+      .where('task.userId = :userId', { userId })
+      .andWhere(':weekDay = ANY(task.weeklyFrequency)', { weekDay })
+      .getMany();
+  }
 }

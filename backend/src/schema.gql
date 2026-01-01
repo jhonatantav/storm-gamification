@@ -24,6 +24,14 @@ input CreateUserDto {
   phoneNumber: String!
 }
 
+type DailyTaskPayload {
+  currentStreak: Int!
+  description: String
+  id: String!
+  name: String!
+  taskIsCompleted: Boolean!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -43,10 +51,12 @@ type Mutation {
   completeTask(taskId: String!): CompleteTaskResponseDto!
   createTask(input: CreateTaskDto!): TaskEntity!
   createUser(input: CreateUserDto!): UserEntity!
+  deleteTask(taskId: String!): Boolean!
   login(input: LoginDto!): LoginResponse!
 }
 
 type Query {
+  dailyTasks(date: DateTime): [DailyTaskPayload!]!
   findUser(email: String!): UserEntity
 
   """Health check endpoint"""

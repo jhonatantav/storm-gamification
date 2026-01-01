@@ -17,11 +17,12 @@ export class UpdateUserLevelActivity {
     private readonly logger: Logger,
   ) {}
 
-  private readonly BASE_XP = 10;
+  private readonly BASE_XP = 1.5;
 
   /**
    * Calcula o XP baseado na frequência semanal e streak atual
-   * Mesma lógica do TaskService.calculateTaskXp
+   *
+   * Progressão balanceada para 30 dias até nível 10 (2 tasks freq 5)
    */
   private calculateTaskXp(
     weeklyFrequency: Weekday[],
@@ -29,15 +30,15 @@ export class UpdateUserLevelActivity {
   ): number {
     const frequency = weeklyFrequency.length;
 
-    // Multiplicadores máximos por frequência
+    // Multiplicadores máximos por frequência (reduzidos para progressão mais lenta)
     const maxMultiplierMap: Record<number, number> = {
-      1: 2.0,
-      2: 2.2,
-      3: 2.5,
-      4: 3.0,
-      5: 3.5,
-      6: 4.0,
-      7: 5.0,
+      1: 1.1,
+      2: 1.15,
+      3: 1.2,
+      4: 1.3,
+      5: 1.4,
+      6: 1.5,
+      7: 1.6,
     };
 
     const maxMultiplier = maxMultiplierMap[frequency] || 2.0;
@@ -101,17 +102,4 @@ export class UpdateUserLevelActivity {
       throw error;
     }
   }
-}
-
-/**
- * Função exportada para ser usada pelo worker do Temporal
- */
-export async function updateUserLevel(
-  input: UpdateUserLevelInput,
-): Promise<void> {
-  // Esta função será injetada no worker do Temporal
-  // A implementação real virá do UpdateUserLevelActivity.execute
-  throw new Error(
-    'Esta função deve ser chamada apenas através do worker do Temporal',
-  );
 }

@@ -6,4 +6,8 @@ export interface ITaskRepository {
   findByUserId(userId: string): Promise<TaskEntity[]>;
   createAndSave(data: Partial<TaskEntity>): Promise<TaskEntity>;
   deleteById(id: string): Promise<void>;
+  findDailyUserTasks(
+    weekDay: number,
+    userId: string,
+  ): Promise<TaskEntity[] | null>;
 }
