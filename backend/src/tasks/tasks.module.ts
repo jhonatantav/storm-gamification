@@ -9,6 +9,8 @@ import { TaskStreaksModule } from 'src/task-streaks/task-streaks.module';
 import { TemporalModule } from 'src/temporal/temporal.module';
 import { MyTasksUseCase } from './use-cases/my-taks.usecase';
 import { TaskOwnershipGuard } from './guards/task-ownership.guard';
+import { DeleteTaskUseCase } from './use-cases/delete-task.usecase';
+import { DailyTasksUseCase } from './use-cases/daily-tasks.usecase';
 
 @Module({
   imports: [UsersModule, TaskStreaksModule, TemporalModule],
@@ -19,6 +21,8 @@ import { TaskOwnershipGuard } from './guards/task-ownership.guard';
     CreateTaskUseCase,
     CompleteTaskUseCase,
     MyTasksUseCase,
+    DeleteTaskUseCase,
+    DailyTasksUseCase,
     TaskOwnershipGuard,
   ],
   exports: [TaskService],

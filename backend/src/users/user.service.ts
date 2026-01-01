@@ -90,9 +90,9 @@ export class UserService {
   async addXpToUser(userId: string, xpAmount: number): Promise<IUser> {
     const user = await this.findUserById(userId);
 
-    let newTotalXp = user.totalXp + xpAmount;
-    let newLevel = this.calculateLevelFromTotalXp(newTotalXp);
-    let newCurrentXp = this.calculateCurrentXpForLevel(newTotalXp, newLevel);
+    const newTotalXp = user.totalXp + xpAmount;
+    const newLevel = this.calculateLevelFromTotalXp(newTotalXp);
+    const newCurrentXp = this.calculateCurrentXpForLevel(newTotalXp, newLevel);
 
     // Log de subida de nível
     if (newLevel > user.currentLevel) {

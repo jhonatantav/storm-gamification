@@ -27,7 +27,11 @@ export class TaskEntity extends BaseAbstractEntity {
   category: TaskCategory;
 
   @Field(() => [Weekday])
-  @Column('simple-array')
+  @Column({
+    type: 'int',
+    array: true,
+    name: 'weekly_frequency',
+  })
   weeklyFrequency: Weekday[];
 
   @Field(() => UserEntity)
